@@ -22,3 +22,4 @@ name: group creation
       dest: "{{ remote_config }}"      owner: root
       group: root      mode: 0440
       validate: /usr/sbin/visudo -cf %s    when: " '{{ group }}' in ansible_facts.getent_group"
+      #new comment
