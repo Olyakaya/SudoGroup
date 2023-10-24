@@ -1,0 +1,24 @@
+---- 
+name: group creation
+  hosts: "{{ srv }}"  vars:
+    - remote_config: /etc/sudoers.d/appadmin    - config_file: /home/obuchyns/ansible/sudo_rights/appadmin
+    - group: appadmin
+  tasks:
+  - name: Verify sudoers.d directory    file:
+      path: /etc/sudoers.d      owner: root
+      group: root      mode: 0755
+      state: directory
+  - name: Verify sudoers include statement    lineinfile:
+      dest: /etc/sudoers      regexp: "^[#@]includedir /etc/sudoers.d"
+      line: "@includedir /etc/sudoers.d"      state: present
+      validate: /usr/sbin/visudo -cf %s
+  - name: Determine available groups
+    getent:      database: group
+  - name: Remove appadmin config from sudoers
+    file:      path: "{{ remote_config }}"
+      state: absent    when: " '{{ group }}' in ansible_facts.getent_group"
+  - name: Copy sudoers file for appadmin group
+    copy:      src: "{{ config_file }}"
+      dest: "{{ remote_config }}"      owner: root
+      group: root      mode: 0440
+      validate: /usr/sbin/visudo -cf %s    when: " '{{ group }}' in ansible_facts.getent_group"
