@@ -1,2 +1,2 @@
 Cmnd_Alias SHELLS = /usr/bin/bash, /usr/bin/sh, /usr/bin/csh, /usr/bin/ksh, /usr/local/bin/tcsh, /usr/bin/rsh, /usr/local/bin/zshCmnd_Alias SUROOT = /usr/bin/su - ,/usr/bin/su root, /usr/bin/su -l, /usr/bin/su --login
-%appadmin ALL=(ALL) NOPASSWD:ALL , !SUROOT, !SHELLS
+%group ALL=(ALL) NOPASSWD:ALL , !SUROOT, !SHELLS

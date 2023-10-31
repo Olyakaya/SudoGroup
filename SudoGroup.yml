@@ -27,12 +27,6 @@ name: group creation
     getent: 
       database: group
 
-  - name: Remove appadmin config from sudoers
-    file:      
-      path: "{{ remote_config }}"
-      state: absent    
-    when: " '{{ group }}' in ansible_facts.getent_group"
-
   - name: Copy sudoers file for '{{ group }}' group
     copy:      
       src: "{{ config_file }}"
@@ -40,6 +34,14 @@ name: group creation
       owner: root
       group: root      
       mode: 0440
-      validate: /usr/sbin/visudo -cf %s    
+      force: true
+      validate: /usr/sbin/visudo -cf %s 
+      backup: yes   
     when: " '{{ group }}' in ansible_facts.getent_group"
+
+  - name: Change sudoers file for '{{ group }}' 
+    lineinfile:
+      path: /etc/sudoers.d/'{{ group }}'
+      regexp: '^%group'
+      line: %'{{ group }}' ALL=(ALL) NOPASSWD:ALL , !SUROOT, !SHELLS
       
