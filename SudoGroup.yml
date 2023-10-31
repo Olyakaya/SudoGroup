@@ -2,8 +2,8 @@
 name: group creation
   hosts: "{{ srv }}"  
   vars:
-    - remote_config: /etc/sudoers.d/appadmin    
-    - config_file: /home/obuchyns/ansible/sudo_rights/appadmin
+    - remote_config: /etc/sudoers.d/'{{ group }}'
+    - config_file: group_config
     - group: appadmin
   tasks:
 
@@ -33,7 +33,7 @@ name: group creation
       state: absent    
     when: " '{{ group }}' in ansible_facts.getent_group"
 
-  - name: Copy sudoers file for appadmin group
+  - name: Copy sudoers file for '{{ group }}' group
     copy:      
       src: "{{ config_file }}"
       dest: "{{ remote_config }}"      
