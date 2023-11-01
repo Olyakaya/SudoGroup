@@ -1,0 +1,5 @@
+Cmnd_Alias SHELLS_ALL = /usr/bin/bash, /usr/bin/sh, /usr/bin/csh, /usr/bin/ksh, /usr/local/bin/tcsh, /usr/bin/rsh, /usr/local/bin/zsh
+Cmnd_Alias SUROOT_SU = /usr/bin/su - ,/usr/bin/su root, /usr/bin/su -l, /usr/bin/su --login
+
+#String below will be replaced from playbook string
+%group ALL=(ALL) NOPASSWD:ALL , !SUROOT_SU, !SHELLS_ALL
